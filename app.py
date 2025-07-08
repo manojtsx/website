@@ -8,7 +8,7 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://website-component-design-generator.vercel.app"])
 
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY') or os.getenv('GOOGLE_API_KEY')
 
@@ -20,6 +20,10 @@ else:
 # Use a global chat session for now (can be improved for multi-user)
 model = genai.GenerativeModel("gemini-1.5-flash")
 chat = model.start_chat()
+
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({'status': 'Backend is working!'}), 200
 
 @app.route('/generate', methods=['POST'])
 def generate():
